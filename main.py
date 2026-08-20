@@ -1,0 +1,1 @@
+print("SPIRA-X project 001 is running") 
