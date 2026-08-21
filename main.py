@@ -5,20 +5,30 @@ def collect_request():
     industry = input("What industry are you in? ")
     problem = input("What business problem do you want to solve? ")
     country = input("Where is your business located? ")
+    budget = input("What is your approximate budget? ")
 
-    return name, industry, problem, country  
+    request = {
+        "name": name,
+        "industry": industry,
+        "problem": problem,
+        "country":country,
+        "budget": budget
+    }
 
-def display_request(name,industry,problem,country):
+    return request
+
+def display_request(request):
     print()
     print("REQUEST RECEIVED")
     print("-----------------")
-    print(f"customer: {name}")
-    print(f"Industry: {industry}")
-    print(f"Problem: {problem}")
-    print(f"Country: {country}")
+    print(f"customer: {request["name"]}")
+    print(f"Industry: {request["industry"]}")
+    print(f"Problem: {request["problem"]}")
+    print(f"Country: {request["country"]}")
+    print(f"budget: #{request["budget"]}")
     print()
     print("SPIRA-X is processing your request...")
 
-name,industry,problem,country = collect_request()
+request = collect_request()
 
-display_request(name,industry,problem,country)
+display_request(request)
