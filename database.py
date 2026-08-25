@@ -53,3 +53,21 @@ def get_request_by_id(request_id):
         "budget": row[5],
         "category": row[6]
     }
+def update_request(request_id,request, category):
+    connection = get_connection()
+    cursor = connection.cursor()
+    cursor.execute(""" UPDATE business_requests SET name = ?, industry = ?, problem = ?, location = ?,budget = ?, category = ? WHERE id = ?""", (
+        request.name,
+        request.industry,
+        request.problem,
+        request.location,
+        request.budget,
+        category,
+        request_id
+    ))
+    updated = cursor.rowcount
+    connection.commit()
+    connection.close()
+    return updated > 0
+
+

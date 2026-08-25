@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from schemas import BusinessRequest
 from business_logic import classify_budget
 from database import initialize_database
-from database import (initialize_database,save_request,get_all_requests,get_request_by_id)
+from database import (initialize_database,save_request,get_all_requests,get_request_by_id,update_request)
 
 app = FastAPI()
 initialize_database()
@@ -62,4 +62,39 @@ def create_request(request: BusinessRequest):
         "location": request.location,
         "budget": request.budget,
         "category": category
+    }
+
+@app.put("/requests/{request_id}")
+def update_business_request(request_id: int, request: BusinessRequest):
+    print("=== UPDATE STARTED ===")
+    print("request_id:", request_id)
+    print("request data:", request)
+
+    # check if the request exists
+
+    existing = get_request_by_id(request_id)
+    if not existing:
+        return {
+            "status": "error",
+            "message": "Request not found"
+        }
+    # classify the budget
+
+    category = classify_budget(request.budget)
+    # update the database ( call the update function)
+    updated = update_request(request_id, request, category)
+
+    if updated == 0:
+        return {
+            "status": "error",
+            "message": "Request not found"
+        }
+
+    # get the updated data and return it
+
+    updated_request = get_request_by_id(request_id)
+    return {
+        "status": "success",
+        "message": "Request updated successfully",
+        "requests": updated_request
     }
