@@ -1,0 +1,23 @@
+import sqlite3
+
+DATABASE_NAME = "spira_x.db"
+
+def get_connection():
+    return sqlite3.connect(DATABASE_NAME)
+
+def initialize_database():
+    connection = get_connection()
+    cursor = connection.cursor()
+    cursor.execute(""" CREATE TABLE IF NOT EXISTS business_requests (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, industry TEXT NOT NULL,problem TEXT NOT NULL, location TEXT NOT NULL,budget INTEGER NOT NULL,category TEXT NOT NULL)""")
+    connection.commit()
+    connection.close()
+
+def save_request(request,category):
+    connection = get_connection()
+    cursor = connection.cursor()
+    cursor.execute(""" INSERT INTO business_requests (name, industry,problem,location,budget,category)
+    VALUES (?,?,?,?,?,?)""", (request.name,request.industry,request.problem,request.location,request.budget,category))
+    request_id = cursor.lastrowid
+    connection.commit()
+    connection.close()
+    return request_id

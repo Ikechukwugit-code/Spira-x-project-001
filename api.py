@@ -2,8 +2,11 @@ from fastapi import FastAPI
 
 from schemas import BusinessRequest
 from business_logic import classify_budget
+from database import initialize_database
+from database import initialize_database, save_request
 
 app = FastAPI()
+initialize_database()
 
 @app.get("/")
 def home():
@@ -25,9 +28,11 @@ def about():
 def create_request(request: BusinessRequest):
 
     category = classify_budget(request.budget)
+    request_id = save_request(request, category)
 
     return {
         "status": "success",
+        "request_id": request_id,
         "customer": request.name,
         "industry": request.industry,
         "problem": request.problem,
