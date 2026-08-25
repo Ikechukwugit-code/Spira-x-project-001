@@ -32,3 +32,24 @@ def get_all_requests():
     for row in rows:
         requests.append({"id": row[0],"name": row[1],"industry": row[2],"problem": row[3],"location": row[4],"budget": row[5],"category": row[6]})
     return requests
+
+def get_request_by_id(request_id):
+    connection = get_connection()
+    cursor = connection.cursor()
+    cursor.execute(""" SELECT id,name,industry,problem,location,budget,category FROM business_requests WHERE id = ? """, (request_id,))
+
+    row  = cursor.fetchone()
+    connection.close()
+
+    if row is None:
+        return None
+
+    return {
+        "id": row[0],
+        "name": row[1],
+        "industry": row[2],
+        "problem": row[3],
+        "location": row[4],
+        "budget": row[5],
+        "category": row[6]
+    }

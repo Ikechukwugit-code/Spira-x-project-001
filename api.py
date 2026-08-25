@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from schemas import BusinessRequest
 from business_logic import classify_budget
 from database import initialize_database
-from database import (initialize_database,save_request,get_all_requests)
+from database import (initialize_database,save_request,get_all_requests,get_request_by_id)
 
 app = FastAPI()
 initialize_database()
@@ -31,6 +31,20 @@ def get_requests():
         "status": "success",
         "count": len(requests),
         "requests": requests
+    }
+
+@app.get("/requests/{request_id}")
+def get_request(request_id: int):
+
+    request = get_request_by_id(request_id)
+    if request is None:
+        return {
+            "status": "error",
+            "message": "Request not found"
+        }
+    return {
+        "status": "success",
+        "request": request
     }
 
 @app.post("/requests")
