@@ -1,4 +1,7 @@
 def classify_budget(budget):
+    budget = int(budget)
+    
+
     if budget < 100000:
         return "Basic"
 
@@ -7,3 +10,5 @@ def classify_budget(budget):
 
     else:
         return "Premium"
+
+    

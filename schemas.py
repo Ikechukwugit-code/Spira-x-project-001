@@ -5,4 +5,4 @@ class BusinessRequest(BaseModel):
     industry: str
     problem: str
     location: str
-    budget: str
+    budget: int
