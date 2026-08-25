@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from schemas import BusinessRequest
 from business_logic import classify_budget
 from database import initialize_database
-from database import initialize_database, save_request
+from database import (initialize_database,save_request,get_all_requests)
 
 app = FastAPI()
 initialize_database()
@@ -22,6 +22,15 @@ def about():
         "project": "SPIRA-X Project 001",
         "version": "0.1",
         "description": "Business Request Engine"
+    }
+
+@app.get("/requests")
+def get_requests():
+    requests = get_all_requests()
+    return {
+        "status": "success",
+        "count": len(requests),
+        "requests": requests
     }
 
 @app.post("/requests")

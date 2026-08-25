@@ -21,3 +21,14 @@ def save_request(request,category):
     connection.commit()
     connection.close()
     return request_id
+
+def get_all_requests():
+    connection = get_connection()
+    cursor = connection.cursor()
+    cursor.execute(""" SELECT id,name,industry,problem,location,budget,category FROM business_requests ORDER BY id DESC """)
+    rows = cursor.fetchall()
+    connection.close()
+    requests = []
+    for row in rows:
+        requests.append({"id": row[0],"name": row[1],"industry": row[2],"problem": row[3],"location": row[4],"budget": row[5],"category": row[6]})
+    return requests
