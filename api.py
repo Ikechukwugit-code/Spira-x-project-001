@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from schemas import BusinessRequest
 from business_logic import classify_budget
 from database import initialize_database
-from database import (initialize_database,save_request,get_all_requests,get_request_by_id,update_request)
+from database import (initialize_database,save_request,get_all_requests,get_request_by_id,update_request,delete_request)
 
 app = FastAPI()
 initialize_database()
@@ -97,4 +97,18 @@ def update_business_request(request_id: int, request: BusinessRequest):
         "status": "success",
         "message": "Request updated successfully",
         "requests": updated_request
+    }
+
+@app.delete("/requests/{request_id}")
+def delete_business_request(request_id: int):
+    deleted = delete_request(request_id)
+    if deleted == 0:
+        return {
+            "status": "error",
+            "message": "Request not found"
+        }
+    return {
+        "status": "success",
+        "message": "Request deleted successfully",
+        "request_id": request_id
     }

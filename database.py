@@ -70,4 +70,14 @@ def update_request(request_id,request, category):
     connection.close()
     return updated > 0
 
+def delete_request(request_id):
+    connection = get_connection()
+    cursor = connection.cursor()
+    cursor.execute(""" DELETE FROM business_requests WHERE id = ? """, (request_id,))
+    deleted = cursor.rowcount
+
+    connection.commit()
+    connection.close()
+    return deleted
+
 
