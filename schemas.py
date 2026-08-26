@@ -1,8 +1,8 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 class BusinessRequest(BaseModel):
     name: str
     industry: str
     problem: str
     location: str
-    budget: int
+    budget: int = Field(..., strict=True)
