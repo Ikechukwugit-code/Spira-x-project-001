@@ -1,9 +1,11 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, status
+
 
 from schemas import BusinessRequest
 from business_logic import classify_budget
 from database import initialize_database
 from database import (initialize_database,save_request,get_all_requests,get_request_by_id,update_request,delete_request)
+
 
 app = FastAPI()
 initialize_database()
@@ -38,16 +40,17 @@ def get_request(request_id: int):
 
     request = get_request_by_id(request_id)
     if request is None:
-        return {
-            "status": "error",
-            "message": "Request not found"
-        }
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Request not found"
+        )
     return {
         "status": "success",
         "request": request
     }
+       
 
-@app.post("/requests")
+@app.post("/requests", status_code=status.HTTP_201_CREATED)
 def create_request(request: BusinessRequest):
 
     category = classify_budget(request.budget)
@@ -85,10 +88,9 @@ def update_business_request(request_id: int, request: BusinessRequest):
     updated = update_request(request_id, request, category)
 
     if updated == 0:
-        return {
-            "status": "error",
-            "message": "Request not found"
-        }
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Request not found"
+        )
 
     # get the updated data and return it
 
@@ -103,10 +105,8 @@ def update_business_request(request_id: int, request: BusinessRequest):
 def delete_business_request(request_id: int):
     deleted = delete_request(request_id)
     if deleted == 0:
-        return {
-            "status": "error",
-            "message": "Request not found"
-        }
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="Request not found")
+    
     return {
         "status": "success",
         "message": "Request deleted successfully",
