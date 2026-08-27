@@ -1,5 +1,6 @@
 from fastapi import APIRouter,status, HTTPException
 from schemas import BusinessRequest
+from app.repositories.request_repository import update_request, get_by_id
 from business_logic import classify_budget
 from database import (
     save_request,
@@ -63,19 +64,19 @@ def update_business_request(
 ):
 
     category = classify_budget(request.budget)
-    updated = update_request(
+    updated_count = update_request(
         request_id,
         request,
         category
     )
 
-    if updated ==0:
+    if updated_count ==0:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail = "Request not found"
         )
 
-    update_request= get_request_by_id(
+    updated_request= get_request_by_id(
         request_id
     )
 
