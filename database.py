@@ -1,6 +1,6 @@
 import sqlite3
+from app.config import DATABASE_NAME
 
-DATABASE_NAME = "spira_x.db"
 
 def get_connection():
     return sqlite3.connect(DATABASE_NAME)
