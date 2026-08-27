@@ -83,7 +83,7 @@ def update_business_request(
     return {
         "status": "success",
         "message": "Request updated successfully",
-        "request": update_request
+        "request": updated_request
 
     }
 

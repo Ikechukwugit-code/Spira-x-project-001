@@ -5,6 +5,7 @@ DATABASE_NAME = "spira_x.db"
 def get_connection():
     return sqlite3.connect(DATABASE_NAME)
 
+
 def initialize_database():
     connection = get_connection()
     cursor = connection.cursor()
