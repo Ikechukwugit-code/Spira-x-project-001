@@ -2,7 +2,9 @@ import sqlite3
 from app.config import DATABASE_NAME
 
 
-def get_connection():
+def get_connection(database_name=None):
+    if database_name is None:
+        database_name=DATABASE_NAME
     return sqlite3.connect(DATABASE_NAME)
 
 
